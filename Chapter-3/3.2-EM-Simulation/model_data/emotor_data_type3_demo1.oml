@@ -1,0 +1,111 @@
+%% electric motor parameters - based on Look-up tables
+%torque vs. speed and efficiency vs. speed, torque provided
+%clear all
+%clc
+
+motor_type=3%type of model selected in by the Include block in the Activate model
+
+
+%optionally for design exploration
+torque_multiplier=1; 
+speed_multiplier=1; 
+if (exist('emotor_efficiency_scale_global'))
+	emotor_efficiency_scale = emotor_efficiency_scale_global
+else
+	emotor_efficiency_scale = 1
+end
+
+%T VS N CURVE
+%torque vs. speed curve
+%peak
+
+m_max_trq_data=torque_multiplier*[450,450,450,450,337.5,262.5,225,187.5,150,120];
+
+m_spd_data=speed_multiplier*[0.0,500,1000,2000,3000,4000,5000,6000,7000,8000]*(2*pi)/60;%rad/s
+
+m_spd_data_rpm = m_spd_data*60/2/pi;%!
+
+m_max_trq=m_max_trq_data;
+m_max_gen_trq=-m_max_trq;
+
+%used by vehicle model integral block to set max speed
+m_spd_max = max(m_spd_data);%!
+
+
+
+%m_spd_max_rpm=8000;
+%m_spd_max=m_spd_max_rpm*2*pi/60;
+
+m_spd_rated_rpm = 2000;
+m_spd_rated =m_spd_rated_rpm*2*pi/60;
+
+
+m_trq_rated = 450;%N-m
+
+%figure();
+%plot(m_spd_data_rpm,m_max_trq);
+%title('E-motor: Maximum Torque (N-m) vs. Speed (rpm)');
+
+
+
+%EFFICIENCY
+%efficiency vs. speed and torque
+m_map_eff_spd=speed_multiplier*[0.0,500,1000,2000,3000,4000,5000,6000,7000,8000]*(2*pi)/60;%% (rad/s), speed range of the motor
+
+m_map_eff_trq=torque_multiplier*[-450,-337.5,-262.5,-225,-187.5,-150,-120,0,120,150,187.5,225,262.5,337.5,450]
+
+%% (--),  efficiency map indexed vertically (rows) by m_map_spd and horizontally (columns) by m_map_trq
+%for example
+rand('seed',42)
+eff = linspace(0.5,0.99,length(m_map_eff_spd))+rand(1,length(m_map_eff_spd))*0.3;
+m_eff_map=eff'.*[ones(length(m_map_eff_spd),length(m_map_eff_trq))];
+
+
+%{
+%example how to add efficiency map vs. speed and torque and resample
+%initialize the efficiency map
+m_eff_map_data_resample=[]
+
+%add data to variables below
+
+%torque @ speed = rpm
+m_map_eff_spd_data = [];
+m_map_eff_trq_data=[
+
+]';%notice the ' for transpose
+m_map_eff_data=[
+
+]';
+
+%resample the efficiency at the m_map_eff_spd and m_map_eff_trq values
+%zi = interp2(x,y,z,xi,yi,method,extrap)
+method = 'linear';%'spline'
+extrap = 'extrap';%'noextrap'
+
+%m_eff_map_data_resample=interp2(m_map_eff_spd_data,m_map_eff_trq_data,m_map_eff_data, m_map_eff_spd, m_map_eff_trq);%!
+
+m_eff_map_data_resample_spd=interp1(m_map_eff_trq_data,m_map_eff_data, m_map_eff_trq, method,extrap);%!
+
+m_eff_map_data_resample=[m_eff_map_data_resample;m_eff_map_data_resample_spd] 
+
+
+%repeat above to keep adding data for the number of speeds
+
+%} 
+
+%{ can remove comments if would like to review contour plot of e-motor efficiency
+if (isfigure(3000))
+    close(3000);
+end
+
+figure(3000)
+contour(m_map_eff_spd*60/2/pi,m_map_eff_trq,m_eff_map')
+title('E-Motor Efficiency @  Torque (N-m) vs. Speed (rpm)')
+xlabel('Speed (rpm)')
+ylabel('Torque (N-m)')
+legend('on')
+%}
+
+
+
+
