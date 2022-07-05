@@ -1,0 +1,15 @@
+%ANR26650M1_B cell - Equivalent Circuit - Plett ESC model
+%https://ANR26650M1_Bbatteries.com/ANR26650M1_B-lithiumwerks-nanophosphate-3-3v-2-5ah-lithium-iron-phosphate-battery/
+% Cell Type: 26650 Lithium Ion Power Cylindrical Cell
+
+%rated at temperature = 25 degC 
+ANR26650M1_B.discharge.continuous.current.max = 50;%amps, max continuous discharge current
+ANR26650M1_B.charge.continuous.current.max = 10;%amps, max continuous charge current
+ANR26650M1_B.voltage.max = 3.6;%volts, 
+ANR26650M1_B.voltage.min = 2.2;%volts, 
+ANR26650M1_B.voltage.nominal = 3.3;%volt
+ANR26650M1_B.capacity = 2.5;%Amp-hours,
+ANR26650M1_B.mass = 76/1000;%kg
+ANR26650M1_B.energy = ANR26650M1_B.voltage.nominal * ANR26650M1_B.capacity;%watt-hours
+ANR26650M1_B.length = 65.15;%mm
+ANR26650M1_B.diameter = 26;%mm

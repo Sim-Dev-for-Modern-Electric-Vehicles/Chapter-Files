@@ -1,0 +1,47 @@
+% e-motor parameters
+
+motor_type=2%type of model selected in by the Include block in the Activate model
+
+%specify efficiency, rated speed, rated torque and maximum speed
+%between rated speed and max speed, power=constant and torque computed from constant powe
+
+emotor_efficiency = 0.85
+
+if (exist('emotor_efficiency_scale_global'))
+	emotor_efficiency_scale = emotor_efficiency_scale_global
+else
+	emotor_efficiency_scale = 1
+end
+
+%used by vehicle model integral block to set max speed
+
+%set motor parameters
+%motor 2
+
+
+m_spd_max_rpm=8000;
+m_spd_max=m_spd_max_rpm*2*pi/60;
+
+m_spd_rated_rpm = 2000;
+m_spd_rated =m_spd_rated_rpm*2*pi/60;
+
+
+m_trq_rated = 450;%N-m
+
+%compute torque over speed range
+speed_incr=1/20*m_spd_max_rpm;%rpm
+index=1;
+m_max_trq=[];
+m_spd_data_rpm=[];
+for speed =  0:speed_incr:m_spd_max_rpm
+
+	m_spd_data_rpm(index) =speed;
+	if speed < m_spd_rated_rpm
+		m_max_trq(index) = m_trq_rated;
+	else%compute motor torque between rated speed and max speed
+		m_max_trq(index) = m_trq_rated*m_spd_rated_rpm/speed;
+	end
+	index = index+1;
+end
+
+

@@ -1,0 +1,39 @@
+%module info
+
+unknown = 9999%if value is unknown, use this number as placeholder
+
+file_name = omlfilename('fullpath')
+this_path = fileparts(file_name)
+cd(this_path);
+
+run('..\cell\battery_data_cell_LFP_demo1.oml')%some data depends on cell data
+
+
+
+module_A.parallel = 1;
+module_A.series = 10;
+
+module_A.charge.current.continuous.magnitude.max = 200%Amp
+module_A.charge.current.continuous.SOC.high = 0.90% (0-1) percent
+module_A.charge.current.continuous.SOC.low = 0.20% (0-1) percent
+
+
+module_A.discharge.current.continuous.magnitude.max = 200%Amp
+module_A.discharge.current.continuous.SOC.high = 1.00% (0-1) percent
+module_A.discharge.current.continuous.SOC.low = 0.10% (0-1) percent
+
+module_A.charge.temp.max = 35;%degC
+module_A.charge.temp.min = 25;%degC
+module_A.discharge.temp.max = 35;%degC
+module_A.discharge.temp.min= -15;%degC
+
+
+
+module_A.SOC_high = 1.0% (0-1) percent
+module_A.SOC_low = 0.1% (0-1) percent
+
+module_A.voltage.difference = 500;%mV
+
+module_A.self_discharge = 0.03%(0-1) percent/month, 25degC, 
+module_A.mass = 50;%kg
+

@@ -1,0 +1,96 @@
+cell_type=1;%model of cell selected in Activate by Include Block
+
+file_name = omlfilename('fullpath')
+this_path = fileparts(file_name)
+cd(this_path);
+
+run('..\module\battery_data_module_demo1.oml')%some data depends on module data
+run('..\cell\battery_data_cell_demo1.oml')%some data depends on module data
+
+
+battery_cell = LFP_A;
+module = module_A;
+
+%CELL/MODULE --> PACK:  assemble pack from data from cell/module 
+%assuming modules are all the same
+num_cells_per_module_parallel= module.parallel%connected in parallel; 
+num_cells_per_module_series=module.series
+num_cells_module_total = num_cells_per_module_parallel*num_cells_per_module_series
+
+
+%specify the pack design based on modules
+num_modules_pack_series = 10
+num_modules_pack_parallel = 1
+
+num_cells_pack_total = num_cells_module_total*num_modules_pack_series*num_modules_pack_parallel
+
+%specify the pack design based on cells
+
+battery_pack_capacity = module_capacity*num_modules_pack_parallel;%amp-hours
+nominal_voltage_pack = num_cells_series_pack*battery_cell.nominal_voltage_cell %volts
+battery_pack_energy = module_energy*num_modules_pack_series/1000%kW-hours
+
+
+%max_discharge_current_module = battery_cell.max_discharge_current_cell
+%max_charge_current_module = battery_cell.max_charge_current_cell
+
+
+
+pack_B.voltage.max = 800;%Volts
+pack_B.voltage.min = 400;%Volts
+pack_B.voltage.rated= 600;%Volts
+pack_B.capacity.rated = 500;%Amp-hours
+
+
+pack_B.parallel = 2;
+pack_B.series = 200;
+
+
+pack_B.charge.current.continuous.magnitude.std = 150%Amp
+pack_B.charge.current.continuous.magnitude.max = 250%Amp
+
+pack_B.charge.current.continuous.SOC.high = module_A.charge.current.continuous.SOC.high;% percent
+pack_B.charge.current.continuous.SOC.low = module_A.charge.current.continuous.SOC.low% percent
+
+pack_B.charge.current.instant.magnitude.max = 300%Amp
+pack_B.charge.current.instant.time = 15%seconds
+
+
+
+pack_B.discharge.current.continuous.magnitude.std = 150%Amp
+pack_B.discharge.current.continuous.magnitude.max = 250%Amp
+
+pack_B.discharge.current.continuous.SOC.high = module_A.discharge.current.continuous.SOC.high;% percent
+pack_B.discharge.current.continuous.SOC.low = module_A.discharge.current.continuous.SOC.low;% percent
+
+pack_B.discharge.current.instant.magnitude.max = 300%Amp
+pack_B.discharge.current.instant.time =10%seconds
+pack_B.discharge.max_power = 250;%kW
+
+pack_B.SOC.max=1.0;%(0-1) percent
+pack_B.SOC.min = 0.1;%(0-1) percent
+
+pack_B.temp_balance = 5;%degC
+
+pack_B.cycle_life.cycles = 2500;
+pack_B.cycle_life.temp=LFP_A.cycle_life.temp;%assumed
+pack_B.cycle_life.DOD = 0.81;%(0-1) percent (I think this is 81 percent capacity)
+pack_B.cycle_life.capacity = LFP_A.cycle_life.capacity;
+
+
+pack_B_insulation = 150;%Ohm/Volts
+
+pack_B.mass = 2750;%kg
+
+pack_B.charge.option1.rate = 0.4 %C
+pack_B.charge.option1.time = unknown %hours (approx)
+
+pack_B.charge.option1.rate = 0.3 %C
+pack_B.charge.option1.time = unknown %hours(approx)
+
+
+pack_B.charge.temp.max = module_A.charge.temp.max
+pack_B.charge.temp.min = module_A.charge.temp.min
+pack_B.discharge.temp.max = module_A.discharge.temp.max
+pack_B.discharge.temp.min = module_A.discharge.temp.min
+

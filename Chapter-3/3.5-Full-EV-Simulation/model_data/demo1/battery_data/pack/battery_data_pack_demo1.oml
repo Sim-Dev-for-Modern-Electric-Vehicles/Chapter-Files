@@ -1,0 +1,69 @@
+%pack info
+unknown = 9999;%if value is unknown, use this number as placeholder
+
+battery_model_type=2;%model selected in Activate by Include Block
+
+file_name = omlfilename('fullpath')
+this_path = fileparts(file_name)
+cd(this_path);
+
+run('..\module\battery_data_module_demo1.oml')%some data depends on module data
+
+
+pack_A.voltage.max = 800;%Volts
+pack_A.voltage.min = 400;%Volts
+pack_A.voltage.rated= 600;%Volts
+pack_A.capacity.rated = 500;%Amp-hours
+
+
+pack_A.parallel = 2;
+pack_A.series = 200;
+
+
+pack_A.charge.current.continuous.magnitude.std = 150%Amp
+pack_A.charge.current.continuous.magnitude.max = 250%Amp
+
+pack_A.charge.current.continuous.SOC.high = module_A.charge.current.continuous.SOC.high;% percent
+pack_A.charge.current.continuous.SOC.low = module_A.charge.current.continuous.SOC.low% percent
+
+pack_A.charge.current.instant.magnitude.max = 300%Amp
+pack_A.charge.current.instant.time = 15%seconds
+
+
+
+pack_A.discharge.current.continuous.magnitude.std = 150%Amp
+pack_A.discharge.current.continuous.magnitude.max = 250%Amp
+
+pack_A.discharge.current.continuous.SOC.high = module_A.discharge.current.continuous.SOC.high;% percent
+pack_A.discharge.current.continuous.SOC.low = module_A.discharge.current.continuous.SOC.low;% percent
+
+pack_A.discharge.current.instant.magnitude.max = 300%Amp
+pack_A.discharge.current.instant.time =10%seconds
+pack_A.discharge.max_power = 250;%kW
+
+pack_A.SOC.max=1.0;%(0-1) percent
+pack_A.SOC.min = 0.1;%(0-1) percent
+
+pack_A.temp_balance = 5;%degC
+
+pack_A.cycle_life.cycles = 2500;
+pack_A.cycle_life.temp=LFP_A.cycle_life.temp;%assumed
+pack_A.cycle_life.DOD = 0.81;%(0-1) percent (I think this is 81 percent capacity)
+pack_A.cycle_life.capacity = LFP_A.cycle_life.capacity;
+
+
+pack_A_insulation = 150;%Ohm/Volts
+
+pack_A.mass = 2750;%kg
+
+pack_A.charge.option1.rate = 0.4 %C
+pack_A.charge.option1.time = unknown %hours (approx)
+
+pack_A.charge.option1.rate = 0.3 %C
+pack_A.charge.option1.time = unknown %hours(approx)
+
+
+pack_A.charge.temp.max = module_A.charge.temp.max
+pack_A.charge.temp.min = module_A.charge.temp.min
+pack_A.discharge.temp.max = module_A.discharge.temp.max
+pack_A.discharge.temp.min = module_A.discharge.temp.min

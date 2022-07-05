@@ -1,0 +1,41 @@
+%%Vehicle model parameters -also see vehicle superblock
+
+%driver model uses inverse dynamics to compute forces/torques based on desired speed/acceleration based on these same parameters
+
+g=9.81; %%kg-m/s^2, acceleration gravity
+
+vehicle_mass_total = 5000;
+mass=vehicle_mass_total
+m=mass;
+
+rho=1.2; %%kg/m^3, air density 
+
+Cd=0.6; %%drag coefficient
+
+A=5; %%m^2; frontal cross-section area
+
+uw=0.0; %%m/s, wind velocity
+
+%bw=0.0;  %%kg-m/s, wheel damping, friction
+
+f=0.01;  %%coefficient for rolling friction
+
+%fw=0.0;   %%m; friction arm, wheel
+
+Iw=1; %%kg-m^2; wheel inertia
+
+Nw=4; %%number of wheels 
+
+rw =0.5; %wheel radius
+
+%Fz=m*g/Nw; %%N
+
+Im=1; %%e-motor or engine inertia
+
+%% For braking: Ie=0, Nw=4; and for accel: Ie=0.429, Nw=2.
+
+Ig=0.05; %%gearbox inertia (on e-motor side of inertia, don't use wheel side)
+
+I_equiv=Nw*Iw+(rg^2)*(Im+Ig); %%kg-m^2, effective wheel inertia
+
+mass_equiv  = m + I_equiv/rw^2

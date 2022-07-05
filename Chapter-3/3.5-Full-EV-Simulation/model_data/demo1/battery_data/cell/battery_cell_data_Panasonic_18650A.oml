@@ -1,0 +1,15 @@
+
+% cell properties, e.g. Panasonic NCR18650A Li-ion cell
+%https://na.industrial.panasonic.com/sites/default/pidsa/files/ncr18650a.pdf
+
+%rated at temperature = 25 degC 
+Pan18650A.discharge.continuous.current.max = 6.2;%amps, max continuous discharge current
+Pan18650A.charge.continuous.current.max = 6.2;%amps, max continuous charge current
+Pan18650A.voltage.max = 4.2;%volts, 
+Pan18650A.voltage.min = 2.5;%volts, 
+Pan18650A.voltage.nominal = 3.6;%volt
+Pan18650A.capacity = 2.9;%Amp-hours,
+Pan18650A.mass = 47.5/1000;%kg
+Pan18650A.energy = Pan18650A.voltage.nominal * Pan18650A.capacity;%watt-hours
+Pan18650A.length = 65.3;%mm
+Pan18650A.diameter = 18.5;%mm
